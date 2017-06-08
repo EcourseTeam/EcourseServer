@@ -40,14 +40,20 @@ function Dao() {
 		}
 	};
 	this.getEntries = function(tableName, filter, callback) {
+		var response = {
+			'tableName': tableName,
+			'entries': []
+		};
 		if (filter == null || filter == {}) {
 			db.all("select * from " + tableName, function(err, res) {
-				callback.call(this, res);
+				response['entries'] = res;
+				callback.call(this, response);
 			});
 		} else {
 			var sql = "select * from " + tableName + whereClause(filter);
 			db.all(sql, whereArgs(filter), function(err, res) {
-				callback.call(this, res);
+				response['entries'] = res;
+				callback.call(this, response);
 			});
 		}
 	};
